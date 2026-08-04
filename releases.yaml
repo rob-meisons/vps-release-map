@@ -1,0 +1,24 @@
+# Release map for the web-installer fleet.
+#
+# Each entry pins one app environment to an immutable Git tag in that app's own
+# code repository. web-installer's updater reads this file with the dotted key
+# "{app}.{env}", so the shape is:
+#
+#   <app>:
+#     <env>: <tag>
+#
+# Only environments configured with `sync: release` in sites.yaml are listed
+# here. Environments in the default `sync: branch` mode follow a branch tip and
+# are deliberately absent (e.g. weather.stage tracks origin/main).
+#
+# To promote or roll back an environment: edit its tag below, commit, push, then
+# on the VPS run `wi update <app> <env>` -- or wait for that environment's daily
+# timer. An update is a no-op when the tag already resolves to the checked-out
+# commit. Release sync may intentionally move backward, so a rollback is just a
+# tag change here.
+#
+# Tags must already exist in the app repo. The updater fails the run (leaving the
+# current checkout serving) if the selected tag cannot be resolved.
+
+weather:
+  live: v1.0.0
