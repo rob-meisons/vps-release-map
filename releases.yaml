@@ -28,4 +28,4 @@ weather:
 # alternate curated root), so it needs the release that contains those settings.
 # v2025-26 is a season data tag from 2026-04-23 and predates the feature.
 fpl:
-  legacy-2025-26: v2026.08.06
+  legacy-2025-26: v2026.08.08
