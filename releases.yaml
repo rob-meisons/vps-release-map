@@ -22,3 +22,6 @@
 
 weather:
   live: v1.0.0
+
+fpl:
+  legacy-2025-26: v2025-26
