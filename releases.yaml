@@ -1,24 +1,27 @@
 # Release map for the web-installer fleet.
 #
-# Each entry pins one app environment to an immutable Git tag in that app's own
-# code repository. web-installer's updater reads this file with the dotted key
-# "{app}.{env}", so the shape is:
+# Each entry selects what one app environment deploys. web-installer's updater
+# reads this file with the dotted key "{app}.{env}". Two forms are accepted:
 #
 #   <app>:
-#     <env>: <tag>
+#     <env>: <tag>              # pin to an immutable tag
+#     <env>: {branch: <name>}   # follow that branch tip on every update
+#
+# The branch form requires `branch` in that environment's `release.allow` list
+# in sites.yaml. The updater refuses it otherwise, before fetching any code.
 #
 # Only environments configured with `sync: release` in sites.yaml are listed
 # here. Environments in the default `sync: branch` mode follow a branch tip and
 # are deliberately absent (e.g. weather.stage tracks origin/main).
 #
-# To promote or roll back an environment: edit its tag below, commit, push, then
-# on the VPS run `wi update <app> <env>` -- or wait for that environment's daily
-# timer. An update is a no-op when the tag already resolves to the checked-out
-# commit. Release sync may intentionally move backward, so a rollback is just a
-# tag change here.
+# To promote or roll back an environment: edit its value below, commit, push,
+# then on the VPS run `wi update <app> <env>` -- or wait for that environment's
+# daily timer. An update is a no-op when the selection already resolves to the
+# checked-out commit. Release sync may intentionally move backward, so a
+# rollback is just a value change here.
 #
 # Tags must already exist in the app repo. The updater fails the run (leaving the
-# current checkout serving) if the selected tag cannot be resolved.
+# current checkout serving) if the selection cannot be resolved.
 
 weather:
   live: v1.0.0
@@ -27,9 +30,24 @@ weather:
   # as live today; the two diverge the moment live is promoted.
   classic: v1.0.0
 
-# The legacy environment pins a release of the CURRENT code, not last season's
-# code. Legacy operation is configuration (frozen live access, pinned run date,
-# alternate curated root), so it needs the release that contains those settings.
-# v2025-26 is a season data tag from 2026-04-23 and predates the feature.
 fpl:
+  # The legacy environment pins a release of the CURRENT code, not last season's
+  # code. Legacy operation is configuration (frozen live access, pinned run date,
+  # alternate curated root), so it needs the release that contains those settings.
+  # v2025-26 is a season data tag from 2026-04-23 and predates the feature.
   legacy-2025-26: v2026.08.08
+  # The 2026/27 live site. Moved here from the host-local /etc/web-installer/
+  # releases.yaml so that every release selection in the fleet lives in this repo.
+  #
+  # TEMPORARILY following main instead of a pinned tag. Every update deploys the
+  # current tip of origin/main, so an unreviewed commit reaches production. To
+  # pin again, replace the value with a tag (it was v2026.08.26-r2) and run
+  # `wi update fpl live-2026-27` on the VPS -- no sites.yaml change needed.
+  live-2026-27: {branch: main}
+
+# The apex lobsteranalytics.com shell: a static bundle built from the same
+# private fpl repo. It embeds fpl.lobsteranalytics.com in an iframe, so it
+# deliberately follows the same ref as fpl.live-2026-27 above. Change the two
+# together or the shell and the app it frames can drift.
+site-frame:
+  live-2026-27: {branch: main}
