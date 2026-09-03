@@ -24,10 +24,11 @@
 # current checkout serving) if the selection cannot be resolved.
 
 weather:
-  live: v1.0.0
+  live: v2.0.0
   # classic.solangosta.com is a permanent snapshot of the v1.0.0 site, kept
-  # reachable after live advances past this tag. It is deliberately the same tag
-  # as live today; the two diverge the moment live is promoted.
+  # reachable now that live has advanced past that tag. Live and classic were
+  # the same tag until 2026-09-03, when live was promoted to v2.0.0; they are
+  # now deliberately different and classic must not follow live again.
   classic: v1.0.0
 
 fpl:
