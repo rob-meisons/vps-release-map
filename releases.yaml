@@ -40,15 +40,15 @@ fpl:
   # The 2026/27 live site. Moved here from the host-local /etc/web-installer/
   # releases.yaml so that every release selection in the fleet lives in this repo.
   #
-  # TEMPORARILY following main instead of a pinned tag. Every update deploys the
-  # current tip of origin/main, so an unreviewed commit reaches production. To
-  # pin again, replace the value with a tag (it was v2026.08.26-r2) and run
-  # `wi update fpl live-2026-27` on the VPS -- no sites.yaml change needed.
-  live-2026-27: {branch: main}
+  # Pinned to a tag again (followed {branch: main} from 2026-08-28 to 2026-11-16;
+  # the tag before that was v2026.08.26-r2). The daily pipeline still runs on
+  # every update (pipeline_always), so data refreshes while the code stays put.
+  # Keep site-frame.live-2026-27 below on the same tag.
+  live-2026-27: live-2026-27-single-vm
 
 # The apex lobsteranalytics.com shell: a static bundle built from the same
 # private fpl repo. It embeds fpl.lobsteranalytics.com in an iframe, so it
 # deliberately follows the same ref as fpl.live-2026-27 above. Change the two
 # together or the shell and the app it frames can drift.
 site-frame:
-  live-2026-27: {branch: main}
+  live-2026-27: live-2026-27-single-vm
