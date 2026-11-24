@@ -55,3 +55,5 @@ fpl:
 # together or the shell and the app it frames can drift.
 site-frame:
   live-2026-27: live-2026-27-single-vm
+  # stage.lobsteranalytics.com: frames fpl.stage, so it follows main like it.
+  stage: {branch: main}
