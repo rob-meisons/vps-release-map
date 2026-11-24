@@ -57,3 +57,9 @@ site-frame:
   live-2026-27: live-2026-27-single-vm
   # stage.lobsteranalytics.com: frames fpl.stage, so it follows main like it.
   stage: {branch: main}
+
+# marvia.meisons.com: the snapshot-serving edge only (the producer runs on the
+# operator's laptop). Followed origin/main until 2026-11-24, when it was first
+# pinned to a tag.
+marvia:
+  live: v1.0.0
